@@ -76,7 +76,7 @@
       const handleCreate = async () => {
         if (!nameServer) return alert("Name server wajib diisi");
         try {
-          const url = `https://pterodactyl-ten.vercel.app/create/pterov2?domain=${domain}&apikeyptero=${apikey}&capikeyptero=${capikey}&nameserver=${nameServer}&disk=${disk}&cpu=${cpu}`;
+          const url = `https://api.luxz-store.biz.id/api/pterodactyl?domain=${domain}&apikeyptero=${apikey}&capikeyptero=${capikey}&nameserver=${nameServer}&disk=${disk}&cpu=${cpu}`;
           const res = await fetch(url);
           const data = await res.json();
           if (data.status === true || data.success === true) {
