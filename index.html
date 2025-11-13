@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Manage Panel Pterodactyl</title>
+<style>
+  *{box-sizing:border-box;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto;}
+  body{margin:0;background:linear-gradient(135deg,#140021,#1b0033);color:#eee;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+  .card{width:100%;max-width:420px;background:#1a1a1f;padding:28px;border-radius:14px;box-shadow:0 8px 30px rgba(139,92,246,0.12);}
+  h1{margin:0 0 12px;color:#b678ff;text-align:center;font-size:20px;}
+  input,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#241033;color:#fff;margin-top:8px;}
+  label{display:block;margin-top:12px;color:#c9b8e6;font-size:13px;}
+  .row{display:flex;gap:10px;}
+  .row > div{flex:1;}
+  button{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#7a00ff,#b300ff);color:#fff;font-weight:600;margin-top:16px;cursor:pointer;}
+  button.secondary{background:linear-gradient(135deg,#3b3b4f,#4e4e61);}
+  .loader{display:none;margin:12px auto;border:4px solid rgba(255,255,255,0.08);border-top:4px solid #b678ff;border-radius:50%;width:36px;height:36px;animation:spin 1s linear infinite;}
+  @keyframes spin{100%{transform:rotate(360deg);}}
+  footer{margin-top:18px;text-align:center;color:#9b88c9;font-size:13px;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Buat Panel</h1>
+    <input id="username" placeholder="Username" />
+    <input id="password" type="password" placeholder="Password" />
+    <div class="row">
+      <div>
+        <label for="ram">RAM (GB)</label>
+        <select id="ram">
+          <option value="1">1</option><option value="2">2</option><option value="4">4</option>
+          <option value="6">6</option><option value="8">8</option><option value="10">10</option>
+          <option value="Unlimited">Unlimited</option>
+        </select>
+      </div>
+      <div>
+        <label for="cpu">CPU (Core)</label>
+        <select id="cpu">
+          <option value="1">1</option><option value="2">2</option><option value="4">4</option>
+          <option value="6">6</option><option value="8">8</option><option value="10">10</option>
+          <option value="Unlimited">Unlimited</option>
+        </select>
+      </div>
+    </div>
+    <div class="loader" id="loader"></div>
+    <button id="createBtn" onclick="createPanel()">🚀 Buat Panel</button>
+    <button class="secondary" onclick="location.href='logs.html'">📜 Lihat Log</button>
+  </div>
+  <footer>Luxz - Official © 2025</footer>
+
+<script>
+async function createPanel(){
+  const btn=document.getElementById('createBtn');
+  const loader=document.getElementById('loader');
+  const username=document.getElementById('username').value.trim();
+  const password=document.getElementById('password').value.trim();
+  const ram=document.getElementById('ram').value;
+  const cpu=document.getElementById('cpu').value;
+  if(!username||!password){alert('Isi username & password!');return;}
+  btn.disabled=true;btn.innerText='⏳ Membuat...';loader.style.display='block';
+  try{
+    const res=await fetch('/api/create_panel',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password,ram,cpu})});
+    const json=await res.json();
+    if(json.success){alert(json.message);}else{alert(json.error||'Gagal membuat panel');console.error(json.detail||json);}
+  }catch(e){
+    alert('⚠️ Gagal terhubung ke API. Cek log Vercel.');console.error(e);
+  }finally{btn.disabled=false;btn.innerText='🚀 Buat Panel';loader.style.display='none';}
+}
+</script>
+</body>
+</html>

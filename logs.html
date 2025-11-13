@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Logs | Rachel Hosting</title>
+<style>*{box-sizing:border-box}body{margin:0;font-family:Poppins,system-ui;background:linear-gradient(135deg,#140021,#1b0033);color:#eee;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px} .container{display:flex;background:#1a1a1f;border-radius:14px;overflow:hidden;box-shadow:0 12px 40px rgba(150,0,255,0.14);width:900px;max-width:100%}.left{flex:1;background:radial-gradient(circle at top left,#5e17eb,#2a007a);padding:40px;color:#fff}.right{flex:1;padding:28px}.left h1{margin:0 0 8px}.left p{opacity:.9}.#logBox{background:#111;border-radius:10px;padding:12px;height:300px;overflow:auto;white-space:pre-wrap;font-family:monospace;color:#cfcfcf}</style></head>
+<body>
+<div class="container"><div class="left"><h1>Rachel Hosting</h1><p>Lihat aktivitas pembuatan panel.</p></div>
+<div class="right"><h2 style="color:#b678ff">Log Aktivitas</h2><pre id="logBox">Memuat...</pre><button onclick="resetLogs()" style="margin-top:12px;padding:10px;border-radius:8px;border:none;background:linear-gradient(135deg,#8e2de2,#6c63ff);color:#fff;cursor:pointer">Reset Log</button></div></div>
+<script>
+async function loadLogs(){try{const r=await fetch('/api/get_logs');const t=await r.text();document.getElementById('logBox').textContent=t||'Belum ada log.'}catch(e){document.getElementById('logBox').textContent='Gagal memuat log.';console.error(e)}}
+async function resetLogs(){if(!confirm('Yakin reset log?'))return;try{const r=await fetch('/api/reset_logs');const t=await r.text();alert(t);loadLogs()}catch(e){alert('Gagal reset log');console.error(e)}}
+loadLogs();setInterval(loadLogs,5000);
+</script>
+</body>
+</html>
